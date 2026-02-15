@@ -1,0 +1,100 @@
+[
+  {
+    "model": "api.utilisateur",
+    "pk": 1,
+    "fields": {
+      "nom": "Jean Dupont",
+      "email": "jean.dupont@email.com",
+      "telephone": "+221 77 123 45 67",
+      "date_inscription": "2026-02-11T19:00:00Z",
+      "actif": true
+    }
+  },
+  {
+    "model": "api.utilisateur",
+    "pk": 2,
+    "fields": {
+      "nom": "Marie Martin",
+      "email": "marie.martin@email.com",
+      "telephone": "+221 77 234 56 78",
+      "date_inscription": "2026-02-11T19:00:00Z",
+      "actif": true
+    }
+  },
+  {
+    "model": "api.utilisateur",
+    "pk": 3,
+    "fields": {
+      "nom": "Amadou Diallo",
+      "email": "amadou.diallo@email.com",
+      "telephone": "+221 77 345 67 89",
+      "date_inscription": "2026-02-11T19:00:00Z",
+      "actif": true
+    }
+  },
+  {
+    "model": "api.produit",
+    "pk": 1,
+    "fields": {
+      "nom": "Ordinateur Portable Dell",
+      "description": "Ordinateur portable haute performance pour le développement",
+      "prix": "850000.00",
+      "stock": 15,
+      "categorie": "Informatique",
+      "date_ajout": "2026-02-11T19:00:00Z",
+      "disponible": true
+    }
+  },
+  {
+    "model": "api.produit",
+    "pk": 2,
+    "fields": {
+      "nom": "Smartphone Samsung Galaxy",
+      "description": "Smartphone Android dernière génération",
+      "prix": "450000.00",
+      "stock": 25,
+      "categorie": "Téléphonie",
+      "date_ajout": "2026-02-11T19:00:00Z",
+      "disponible": true
+    }
+  },
+  {
+    "model": "api.produit",
+    "pk": 3,
+    "fields": {
+      "nom": "Écran 27 pouces LG",
+      "description": "Écran 4K pour professionnels",
+      "prix": "320000.00",
+      "stock": 10,
+      "categorie": "Informatique",
+      "date_ajout": "2026-02-11T19:00:00Z",
+      "disponible": true
+    }
+  },
+  {
+    "model": "api.produit",
+    "pk": 4,
+    "fields": {
+      "nom": "Clavier Mécanique RGB",
+      "description": "Clavier gaming avec rétroéclairage RGB",
+      "prix": "75000.00",
+      "stock": 30,
+      "categorie": "Accessoires",
+      "date_ajout": "2026-02-11T19:00:00Z",
+      "disponible": true
+    }
+  },
+  {
+    "model": "api.produit",
+    "pk": 5,
+    "fields": {
+      "nom": "Souris Sans Fil Logitech",
+      "description": "Souris ergonomique sans fil",
+      "prix": "35000.00",
+      "stock": 0,
+      "categorie": "Accessoires",
+      "date_ajout": "2026-02-11T19:00:00Z",
+      "disponible": false
+    }
+  }
+]
