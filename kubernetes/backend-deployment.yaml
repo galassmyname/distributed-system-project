@@ -15,8 +15,8 @@ spec:
     spec:
       containers:
         - name: backend
-          image: distributed-system-project-backend:latest
-          imagePullPolicy: Never
+          image: galassmyname/backend:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8000
           env:
