@@ -1,0 +1,86 @@
+---
+- name: Deploy Application to Kubernetes
+  hosts: local
+  become: no
+  vars:
+    k8s_namespace: distributed-app
+    k8s_manifests_path: ../kubernetes
+
+  tasks:
+    - name: Check if Minikube is running
+      command: minikube status
+      register: minikube_status
+      ignore_errors: yes
+
+    - name: Start Minikube if not running
+      command: minikube start --driver=docker
+      when: minikube_status.rc != 0
+
+    - name: Create namespace
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', '{{ k8s_manifests_path }}/namespace.yaml') }}"
+
+    - name: Apply PostgreSQL ConfigMap
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', '{{ k8s_manifests_path }}/postgres-configmap.yaml') }}"
+
+    - name: Apply PostgreSQL Secret
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', '{{ k8s_manifests_path }}/postgres-secret.yaml') }}"
+
+    - name: Apply PostgreSQL PVC
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', '{{ k8s_manifests_path }}/postgres-pvc.yaml') }}"
+
+    - name: Deploy PostgreSQL
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', '{{ k8s_manifests_path }}/postgres-deployment.yaml') }}"
+
+    - name: Create PostgreSQL Service
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', '{{ k8s_manifests_path }}/postgres-service.yaml') }}"
+
+    - name: Wait for PostgreSQL to be ready
+      kubernetes.core.k8s_info:
+        kind: Pod
+        namespace: "{{ k8s_namespace }}"
+        label_selectors:
+          - app=postgres
+      register: postgres_pods
+      until: postgres_pods.resources[0].status.phase == "Running"
+      retries: 30
+      delay: 10
+
+    - name: Deploy Backend
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', '{{ k8s_manifests_path }}/backend-deployment.yaml') }}"
+
+    - name: Create Backend Service
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', '{{ k8s_manifests_path }}/backend-service.yaml') }}"
+
+    - name: Deploy Frontend
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', '{{ k8s_manifests_path }}/frontend-deployment.yaml') }}"
+
+    - name: Create Frontend Service
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', '{{ k8s_manifests_path }}/frontend-service.yaml') }}"
+
+    - name: Get Minikube IP
+      command: minikube ip
+      register: minikube_ip
+
+    - name: Display application URL
+      debug:
+        msg: "Application is accessible at: http://{{ minikube_ip.stdout }}:30080"
